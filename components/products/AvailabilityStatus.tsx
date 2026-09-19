@@ -1,15 +1,17 @@
+import { Badge } from "@/components/ui/badge"
+
 export default function AvailabilityStatus({ isAvailable }: { isAvailable: boolean }) {
-    const baseCalss = "text-xs font-medium px-[8px] py-[2px] rounded-[26px]" 
+    const baseCalss = "text-xs font-medium px-[0.5em] transition transition-colors ease-in-out duration-300"
 
     return (
-        <span
+        <Badge variant={isAvailable ? "default" : "destructive"}
             className={
                 isAvailable
-                    ? `text-green-600 bg-green-600/10 ${baseCalss}`
-                    : `text-destructive  bg-destructive/10 ${baseCalss}`
+                    ? `text-green-600 bg-green-600/10 ${baseCalss} hover:bg-primary/80`
+                    : `${baseCalss} hover:bg-destructive/20 `
             }
         >
             {isAvailable ? "Dostępny" : "Niedostępny"}
-        </span>
+        </Badge>
     );
 }

@@ -33,7 +33,7 @@ export default function ProductTable() {
                 </TableHeader>
                 <TableBody className="flex flex-col gap-[0.5em] md:table-row-group">
                     {products.map(({ id, name, sku, category, price, availability }) => (
-                        <TableRow key={id} className="bg-white grid grid-cols-3 p-3 border rounded-[12px] mx-4 shadow-xs md:mx-0 md:border-l-0 md:border-r-0 md:border-t-0 md:p-0 md:shadow-none md:table-row">
+                        <TableRow key={id} className="bg-white grid grid-cols-3 p-3 border rounded-[12px] mx-4 shadow-xs hover:bg-white md:mx-0 md:border-l-0 md:border-r-0 md:border-t-0 md:p-0 md:shadow-none md:table-row">
                             <ProductTableCell className="mb-xs text-foreground text-base font-medium row-start-1 col-start-1 col-end-3 md:text-sm md:mb-0" colSpan={2} title={name}>
                                 {name}
                             </ProductTableCell>
