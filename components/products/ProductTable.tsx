@@ -1,6 +1,8 @@
 import {
     Table,
     TableBody,
+    TableCell,
+    TableFooter,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
@@ -8,12 +10,15 @@ import { ProductTableHead } from "./ProductTableHead";
 import ProductTableCell from "./ProductTableCell";
 import { PriceType, ProductType } from "@/types/product";
 import AvailabilityStatus from "./AvailabilityStatus";
+import ProductPagination from "./pagination/ProductPagination";
 
-type  ProductTableProps = {
-    products: ProductType[]
+type ProductTableProps = {
+    products: ProductType[],
+    totalPages: number,
+    page: number
 }
 
-export default function ProductTable({products}: ProductTableProps) {
+export default function ProductTable({ products, page, totalPages }: ProductTableProps) {
 
     const priceFormat = (price: PriceType) =>
         `${price.priceGross.toLocaleString("pl-PL", {
@@ -23,6 +28,7 @@ export default function ProductTable({products}: ProductTableProps) {
 
     return (
         <div className="overflow-hidden border-border md:rounded-[10px] md:border md:shadow-xs">
+
             <Table className="table-fixed">
                 <TableHeader className="hidden md:table-header-group">
                     <TableRow className="bg-gray-50">
@@ -61,8 +67,17 @@ export default function ProductTable({products}: ProductTableProps) {
                         </TableRow>
                     ))}
                 </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TableCell colSpan={7} className="p-0 block bg-gray-50 md:table-cell ">
+                            <div className="flex flex-col items-center justify-center md:flex-row md:justify-between md:px-4 md:py-6">
+                                <p className="p-0 pt-6 text-xs text-muted-foreground md:pt-0">Strona {page} z {totalPages} · {products.length} produktów</p>
+                                <ProductPagination totalPages={totalPages} page={page}/>
+                            </div>
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
             </Table>
         </div>
-
     );
 }

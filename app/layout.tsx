@@ -19,7 +19,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pl"
       className={`${geistSans.variable} h-full antialiased`}
     >
-      <body className="bg-[#FAFAFA]">{children}</body>
+      <body className="bg-[#FAFAFA]">
+        <main className="max-w-318 mx-auto py-6 md:py-13.5 md:px-4">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

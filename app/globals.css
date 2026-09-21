@@ -594,7 +594,13 @@
   --spacing-card-border-radius: 0.5rem;
   --color-card-background: #1a202c;
   --spacing-card-padding: 1rem;
-  --shadow-default: 5px 5px 5px 3px rgba({shadows.default}, 0.15), inset 4px 4px 5px 6px rgb(0 0 0 / 0.2);
+
+  --shadow-default: 5px 5px 5px 3px rgba({
+    shadows.default
+  }
+
+  , 0.15),
+inset 4px 4px 5px 6px rgb(0 0 0 / 0.2);
 }
 
 :root {
