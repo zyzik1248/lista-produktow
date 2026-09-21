@@ -4,13 +4,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { products } from "@/data/mockProduct";
 import { ProductTableHead } from "./ProductTableHead";
 import ProductTableCell from "./ProductTableCell";
-import { PriceType } from "@/types/product";
+import { PriceType, ProductType } from "@/types/product";
 import AvailabilityStatus from "./AvailabilityStatus";
 
-export default function ProductTable() {
+type  ProductTableProps = {
+    products: ProductType[]
+}
+
+export default function ProductTable({products}: ProductTableProps) {
 
     const priceFormat = (price: PriceType) =>
         `${price.priceGross.toLocaleString("pl-PL", {

@@ -100,7 +100,7 @@ export const currencies: OptionType[] = [
     },
 ]
 
-export const products: ProductType[] = [
+export const mockProducts: ProductType[] = [
     {
         id: 1,
         name: 'MacBook Pro 14"',
