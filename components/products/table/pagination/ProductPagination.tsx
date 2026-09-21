@@ -1,4 +1,4 @@
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../../ui/pagination";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from "../../../ui/pagination";
 import ProductPaginationLink from "./ProductPaginationLink";
 
 type ProductPaginationProps = {
