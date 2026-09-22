@@ -684,4 +684,48 @@ inset 4px 4px 5px 6px rgb(0 0 0 / 0.2);
   html {
     @apply font-sans;
   }
+
+  @keyframes animation-in {
+    from {
+      translate: 0 100%;
+    }
+
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes animation-out {
+    from {
+      translate: 0 0;
+    }
+
+    to {
+      translate: 0 100%;
+    }
+  }
+
+  @keyframes animation-in-2 {
+    from {
+      scale: 0.75;
+      opacity: 0
+    }
+
+    to {
+      scale: 1;
+      opacity: 1;
+    }
+  }
+
+  @keyframes animation-out-2 {
+    from {
+      scale: 1;
+      opacity: 1;
+    }
+
+    to {
+      scale: 0.75;
+      opacity: 0;
+    }
+  }
 }

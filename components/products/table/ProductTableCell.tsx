@@ -1,4 +1,4 @@
-import { TableCell } from "../../ui/table";
+import { TableCell } from "@/components/ui/table";
 
 export default function ProductTableCell({
     children,
