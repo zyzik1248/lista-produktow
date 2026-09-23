@@ -87,17 +87,13 @@ export default function AddProductStepper({ producents, categories, features }: 
     }
 
     return (
-        <div>
-            <Stepper setStep={setStep} step={step} steps={steps} />
+        <>
+            <div className="px-4 flex-1 md:flex-none">
+                <Stepper setStep={setStep} step={step} steps={steps} />
+            </div>
             <DialogFooter className="p-0 m-0">
-                {/* <form.Subscribe
-                    selector={(state) => state.values.description}
-                    children={(category) => (
-                        <div>Aktualna nazwa: {category}</div>
-                    )}
-                /> */}
                 <StepperButtons setStep={handleChangeStep} step={step} steps={steps} submitLabel="Zapisz Produkt" onSubmit={() => { }} />
             </DialogFooter>
-        </div>
+        </>
     )
 }
