@@ -8,6 +8,7 @@ import ProductHeader from "@/components/products/ProductHeader";
 import { getProducents } from "@/lib/api/producents";
 import { getCategories } from "@/lib/api/categories";
 import { getFeatures } from "@/lib/api/features";
+import { getCurrencies } from "@/lib/api/currencies";
 
 type PageProps = {
   searchParams: Promise<SearchParams>
@@ -19,6 +20,7 @@ export default async function Home({ searchParams }: PageProps) {
   const { producents } = await getProducents()
   const { categories } = await getCategories()
   const { features } = await getFeatures()
+  const { currencies } = await getCurrencies()
 
   const totalPages = Math.ceil(total / limit)
 
@@ -28,7 +30,7 @@ export default async function Home({ searchParams }: PageProps) {
 
   return (
     <NuqsAdapter>
-      <ProductHeader producents={producents} categories={categories} features={features}/>
+      <ProductHeader producents={producents} categories={categories} features={features} currencies={currencies}/>
       <ProductTable products={products} page={page} totalPages={totalPages} />
     </NuqsAdapter>
   );

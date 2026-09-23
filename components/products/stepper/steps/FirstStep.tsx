@@ -4,14 +4,15 @@ import ProductSelect from "../../ui/ProductSelect"
 import ProductTextarea from "../../ui/ProductTextarea"
 import ProductToggleGroup from "../../ui/ProductToggleGroup"
 import type { OptionType } from "@/types/product"
+import { RefObject } from "react"
 
 type FirstStepProps = {
     form: any
     producents: OptionType[]
     categories: OptionType[]
     features: OptionType[]
-    submitStepRef: React.MutableRefObject<(() => void) | null>
-    setStep: (step: number)=>void
+    submitStepRef: RefObject<Record<number, () => void>>
+    setStep: (step: number) => void
 }
 
 export default function FirstStep({
@@ -33,7 +34,7 @@ export default function FirstStep({
             }}
             children={(group: any) => {
 
-                submitStepRef.current = group.handleSubmit
+                submitStepRef.current[1] = group.handleSubmit
 
                 return (
                     < form >

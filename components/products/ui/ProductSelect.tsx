@@ -1,10 +1,9 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { step1Schema } from "@/lib/schema"
 import ProductFieldInput from "./ProductFieldInput"
 
 type ProductSelectProps = {
     form: any
-    name: keyof typeof step1Schema.shape
+    name: any
     label: string
     placeholder: string
     items: { label: string; value: string | number }[]

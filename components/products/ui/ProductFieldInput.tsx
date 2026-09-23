@@ -2,11 +2,13 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 
 type ProductFieldInputProps = {
     form: any
-    name: any;
+    name: any
     label: string
     groupName: string
     placeholder?: string
     schema: any
+    suffix?: string
+    onChange?: (value: any) => void
     children: (props: {
         value: any
         onChange: (value: any) => void
@@ -19,20 +21,33 @@ type ProductFieldInputProps = {
     }) => React.ReactNode
 }
 
-export default function ProductFieldInput({ form, name, label, placeholder, children, groupName, schema }: ProductFieldInputProps) {
+export default function ProductFieldInput({
+    form,
+    name,
+    label,
+    placeholder,
+    children,
+    groupName,
+    schema,
+    onChange,
+    suffix
+}: ProductFieldInputProps) {
     const fieldName = `${groupName}.${name}`
 
     function validateField(
         schema: { safeParse: (v: unknown) => any },
         value: unknown,
     ): string | undefined {
-        const result = schema.safeParse(value);
-        if (result.success) return undefined;
-        return result.error.issues[0]?.message;
+        const result = schema.safeParse(value)
+
+        if (result.success) return undefined
+
+        return result.error.issues[0]?.message
     }
 
     function showErrors(value: string) {
         const error = validateField(schema.shape[name], value)
+
         if (!error) {
             form.setFieldMeta(fieldName, (prev: any) => ({
                 ...prev,
@@ -41,6 +56,7 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
                 errors: [],
             }))
         }
+
         return error
     }
 
@@ -52,8 +68,8 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
                 onBlur: ({ value }: { value: string }) => showErrors(value),
             }}
             children={(field: any) => {
-                const hasError = field.state.meta.errors.length > 0;
-                const errorMessage = field.state.meta.errors[0];
+                const hasError = field.state.meta.errors.length > 0
+                const errorMessage = field.state.meta.errors[0]
 
                 return (
                     <Field className="gap-0" data-invalid={hasError}>
@@ -65,8 +81,19 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
                         </FieldLabel>
 
                         {children({
-                            value: field.state.value,
-                            onChange: field.handleChange,
+                            value: suffix
+                                ? `${field.state.value ?? ""}${suffix}`
+                                : field.state.value,
+
+                            onChange: (value) => {
+                                const cleanValue = suffix
+                                    ? String(value).replace(suffix, "")
+                                    : value
+
+                                field.handleChange(cleanValue)
+                                onChange?.(cleanValue)
+                            },
+
                             onBlur: field.handleBlur,
                             id: field.name,
                             name: field.name,
@@ -78,14 +105,18 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
                         })}
 
                         {hasError && (
-                            <FieldError className="text-xs pt-[0.3rem]" id={`${field.name}-error`}>
+                            <FieldError
+                                className="text-xs pt-[0.3rem]"
+                                id={`${field.name}-error`}
+                            >
                                 {typeof errorMessage === "string"
                                     ? errorMessage
-                                    : errorMessage?.message ?? JSON.stringify(errorMessage)}
+                                    : errorMessage?.message ??
+                                    JSON.stringify(errorMessage)}
                             </FieldError>
                         )}
                     </Field>
-                );
+                )
             }}
         />
     )

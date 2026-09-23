@@ -7,9 +7,10 @@ type AddProductDialogProps = {
     producents: OptionType[]
     categories: OptionType[]
     features: OptionType[]
+    currencies: OptionType[]
 }
 
-export default function AddProductDialog({ producents, categories, features }: AddProductDialogProps) {
+export default function AddProductDialog({ producents, categories, features,  currencies}: AddProductDialogProps) {
     return (
         <Dialog>
             <DialogTrigger className="text-sm px-4 cursor-pointer flex gap-1.5 py-[0.5rem] text-primary-foreground bg-[#2563EB] border-0 rounded-[50px] hover:bg-[#2563EB]"> <Image src="/Plus.png" alt="plus" width={16} height={16} /> Dodaj produkt</DialogTrigger>
@@ -17,7 +18,7 @@ export default function AddProductDialog({ producents, categories, features }: A
                 <DialogHeader className="pb-4 h-fit px-4">
                     <DialogTitle className="font-geist text-foreground text-base font-medium">Dodaj nowy produkt</DialogTitle>
                 </DialogHeader>
-                <AddProductStepper producents={producents} categories={categories} features={features} />
+                <AddProductStepper producents={producents} categories={categories} features={features} currencies={currencies}/>
             </DialogContent>
         </Dialog>
     )

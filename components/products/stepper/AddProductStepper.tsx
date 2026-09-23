@@ -9,16 +9,18 @@ import { OptionType } from "@/types/product";
 import { DialogFooter } from "@/components/ui/dialog";
 import StepperButtons from "./StepperButtons";
 import { StepItems } from "@/types/stepper";
+import SecondStep from "./steps/SecondStep";
 
 type AddProductStepperProps = {
     producents: OptionType[]
     categories: OptionType[]
     features: OptionType[]
+    currencies: OptionType[]
 }
 
-export default function AddProductStepper({ producents, categories, features }: AddProductStepperProps) {
+export default function AddProductStepper({ producents, categories, features, currencies }: AddProductStepperProps) {
     const [step, setStep] = useState(1)
-    const submitStepRef = useRef<(() => void) | null>(null)
+    const submitStepRef = useRef<Record<number, () => void>>({})
 
     const form = useForm({
         defaultValues: {
@@ -29,6 +31,12 @@ export default function AddProductStepper({ producents, categories, features }: 
                 producent: 0,
                 category: 0,
                 features: [] as number[],
+            },
+            step2: {
+                priceNet: null as string | null,
+                priceGross: null as string | null,
+                vat: "23",
+                currency: 1
             }
         },
         validationLogic: revalidateLogic(),
@@ -62,12 +70,26 @@ export default function AddProductStepper({ producents, categories, features }: 
         {
             title: "Informacje",
             subtitle: "Dane podstawowe",
-            item: <FirstStep setStep={setStep} producents={producents} categories={categories} features={features} submitStepRef={submitStepRef} form={form} />,
+            item:
+                <FirstStep
+                    setStep={setStep}
+                    producents={producents}
+                    categories={categories}
+                    features={features}
+                    submitStepRef={submitStepRef}
+                    form={form}
+                />,
         },
         {
             title: "Cena",
             subtitle: "Dane cenowe",
-            item: <>sd vsdvs fvdsdd</>
+            item:
+                <SecondStep
+                    setStep={setStep}
+                    currencies={currencies}
+                    submitStepRef={submitStepRef}
+                    form={form}
+                />,
         },
         {
             title: "Dostępność",
@@ -80,7 +102,7 @@ export default function AddProductStepper({ producents, categories, features }: 
 
     const handleChangeStep = async (newStep: number) => {
         if (newStep > step) {
-            await submitStepRef.current?.()
+            await submitStepRef.current[step]?.()
         } else {
             setStep(newStep)
         }
