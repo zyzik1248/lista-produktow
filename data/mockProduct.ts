@@ -77,7 +77,7 @@ export const mockfeatures: OptionType[] = [
     },
 ]
 
-export const currencies: OptionType[] = [
+export const mockcurrencies: OptionType[] = [
     {
         id: 1,
         name: "PLN",
