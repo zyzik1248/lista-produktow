@@ -1,21 +1,24 @@
 import { Input } from "@/components/ui/input"
-import { step1Schema } from "@/lib/schema"
 import ProductFieldInput from "./ProductFieldInput"
 
 type ProductInputProps = {
     form: any
-    name: keyof typeof step1Schema.shape;
+    name: any;
     label: string
     placeholder: string
+    groupName: string
+    schema: any
 }
 
-export default function ProductInput({ form, name, label, placeholder }: ProductInputProps) {
+export default function ProductInput({ form, name, label, placeholder, groupName, schema }: ProductInputProps) {
     return (
         <ProductFieldInput
+            schema={schema}
             form={form}
             name={name}
             label={label}
             placeholder={placeholder}
+            groupName={groupName}
         >
             {(props) => (
                 <Input

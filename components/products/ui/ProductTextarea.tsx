@@ -1,12 +1,13 @@
 import { Textarea } from "@/components/ui/textarea"
-import { step1Schema } from "@/lib/schema"
 import ProductFieldInput from "./ProductFieldInput"
 
 type ProductTextareaProps = {
     form: any
-    name: keyof typeof step1Schema.shape
+    name: any
     label: string
     placeholder: string
+    groupName: string
+    schema: any
 }
 
 export default function ProductTextarea({
@@ -14,6 +15,8 @@ export default function ProductTextarea({
     name,
     label,
     placeholder,
+    groupName,
+    schema
 }: ProductTextareaProps) {
 
     return (
@@ -22,6 +25,8 @@ export default function ProductTextarea({
             name={name}
             label={label}
             placeholder={placeholder}
+            groupName={groupName}
+            schema={schema}
         >
             {(props) => (
                 <Textarea

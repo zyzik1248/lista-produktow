@@ -1,20 +1,22 @@
-import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { step1Schema } from "@/lib/schema"
 import ProductFieldInput from "./ProductFieldInput"
 
 type ProductToggleGroupProps = {
     form: any
-    name: keyof typeof step1Schema.shape
+    name: any
     label: string
     items: { label: string, value: number | string }[]
+    groupName: string
+    schema: any
 }
 
 export default function ProductToggleGroup({
     form,
     name,
     label,
-    items
+    items,
+    groupName,
+    schema
 }: ProductToggleGroupProps) {
 
     return (
@@ -22,6 +24,8 @@ export default function ProductToggleGroup({
             form={form}
             name={name}
             label={label}
+            groupName={groupName}
+            schema={schema}
         >
             {(props) => {
                 const selectedValues = Array.isArray(props.value)

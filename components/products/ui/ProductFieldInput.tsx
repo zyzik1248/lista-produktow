@@ -1,11 +1,12 @@
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
-import { step1Schema } from "@/lib/schema"
 
 type ProductFieldInputProps = {
     form: any
-    name: keyof typeof step1Schema.shape;
+    name: any;
     label: string
+    groupName: string
     placeholder?: string
+    schema: any
     children: (props: {
         value: any
         onChange: (value: any) => void
@@ -18,7 +19,9 @@ type ProductFieldInputProps = {
     }) => React.ReactNode
 }
 
-export default function ProductFieldInput({ form, name, label, placeholder, children }: ProductFieldInputProps) {
+export default function ProductFieldInput({ form, name, label, placeholder, children, groupName, schema }: ProductFieldInputProps) {
+    const fieldName = `${groupName}.${name}`
+
     function validateField(
         schema: { safeParse: (v: unknown) => any },
         value: unknown,
@@ -29,9 +32,9 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
     }
 
     function showErrors(value: string) {
-        const error = validateField(step1Schema.shape[name], value)
+        const error = validateField(schema.shape[name], value)
         if (!error) {
-            form.setFieldMeta(name, (prev: any) => ({
+            form.setFieldMeta(fieldName, (prev: any) => ({
                 ...prev,
                 errorMap: {},
                 errorSourceMap: {},
@@ -43,7 +46,7 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
 
     return (
         <form.Field
-            name={name}
+            name={fieldName}
             validators={{
                 onChange: ({ value }: { value: string }) => showErrors(value),
                 onBlur: ({ value }: { value: string }) => showErrors(value),
@@ -75,8 +78,10 @@ export default function ProductFieldInput({ form, name, label, placeholder, chil
                         })}
 
                         {hasError && (
-                            <FieldError id={`${field.name}-error`}>
-                                {errorMessage}
+                            <FieldError className="text-xs pt-[0.3rem]" id={`${field.name}-error`}>
+                                {typeof errorMessage === "string"
+                                    ? errorMessage
+                                    : errorMessage?.message ?? JSON.stringify(errorMessage)}
                             </FieldError>
                         )}
                     </Field>

@@ -1,4 +1,3 @@
-import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { step1Schema } from "@/lib/schema"
 import ProductFieldInput from "./ProductFieldInput"
@@ -9,6 +8,8 @@ type ProductSelectProps = {
     label: string
     placeholder: string
     items: { label: string; value: string | number }[]
+    groupName: string
+    schema: any
 }
 
 export default function ProductSelect({
@@ -16,27 +17,20 @@ export default function ProductSelect({
     name,
     label,
     placeholder,
-    items
+    items,
+    groupName,
+    schema
 }: ProductSelectProps) {
-    function validateField(
-        schema: { safeParse: (v: unknown) => any },
-        value: unknown,
-    ): string | undefined {
-        const result = schema.safeParse(value)
-
-        if (result.success) return undefined
-
-        return result.error.issues[0]?.message
-    }
-
     const selectItems = [{ label: placeholder, value: null }, ...items]
 
     return (
         <ProductFieldInput
+            groupName={groupName}
             form={form}
             name={name}
             label={label}
             placeholder={placeholder}
+            schema={schema}
         >
             {(props) => (
                 <Select items={selectItems}
