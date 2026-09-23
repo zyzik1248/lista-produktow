@@ -1,12 +1,12 @@
 import { mockproducers } from "@/data/mockProduct";
 
-const producers = [...mockproducers];
+const producents = [...mockproducers];
 
 export async function GET() {
     try {
         return Response.json(
             {
-                producers,
+                producents,
             },
             { status: 200 }
         );

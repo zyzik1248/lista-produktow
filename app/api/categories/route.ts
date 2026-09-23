@@ -1,12 +1,12 @@
 import { mockcategory } from "@/data/mockProduct";
 
-const category = [...mockcategory];
+const categories = [...mockcategory];
 
 export async function GET() {
     try {
         return Response.json(
             {
-                category,
+                categories,
             },
             { status: 200 }
         );
