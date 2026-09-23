@@ -1,6 +1,6 @@
 import { OptionType, ProductType } from "@/types/product";
 
-export const category: OptionType[] = [
+export const mockcategory: OptionType[] = [
     {
         id: 1,
         name: "Komputery"
@@ -23,7 +23,7 @@ export const category: OptionType[] = [
     }
 ]
 
-export const producers: OptionType[] = [
+export const mockproducers: OptionType[] = [
     {
         id: 1,
         name: "Samsung",
@@ -46,7 +46,7 @@ export const producers: OptionType[] = [
     },
 ]
 
-export const features: OptionType[] = [
+export const mockfeatures: OptionType[] = [
     {
         id: 1,
         name: "Bluetooth",
@@ -104,10 +104,10 @@ export const mockProducts: ProductType[] = [
     {
         id: 1,
         name: 'MacBook Pro 14"',
-        category: category[0],
+        category: mockcategory[0],
         sku: "MBP14M3PRO",
-        producer: producers[0],
-        features: features.slice(3),
+        producer: mockproducers[0],
+        features: mockfeatures.slice(3),
         price: {
             priceNet: 8129.27,
             priceGross: 9999,
@@ -127,10 +127,10 @@ export const mockProducts: ProductType[] = [
     {
         id: 2,
         name: 'Galaxy S24 Ultra',
-        category: category[1],
+        category: mockcategory[1],
         sku: "SGS24U256",
-        producer: producers[1],
-        features: features.slice(3),
+        producer: mockproducers[1],
+        features: mockfeatures.slice(3),
         price: {
             priceNet: 5121.95,
             priceGross: 6299,
@@ -151,10 +151,10 @@ export const mockProducts: ProductType[] = [
     {
         id: 3,
         name: 'Sony WH-1000XM5',
-        category: category[2],
+        category: mockcategory[2],
         sku: "SNWH1000XM5",
-        producer: producers[2],
-        features: features.slice(3),
+        producer: mockproducers[2],
+        features: mockfeatures.slice(3),
         price: {
             priceNet: 1299.19,
             priceGross: 1599,
@@ -174,10 +174,10 @@ export const mockProducts: ProductType[] = [
     {
         id: 4,
         name: 'Bosch Serie 6 WAU28P40',
-        category: category[3],
+        category: mockcategory[3],
         sku: "BSWAU28P40",
-        producer: producers[3],
-        features: features.slice(3),
+        producer: mockproducers[3],
+        features: mockfeatures.slice(3),
         price: {
             priceNet: 2682.11,
             priceGross: 3299,
@@ -198,10 +198,10 @@ export const mockProducts: ProductType[] = [
     {
         id: 5,
         name: 'Xiaomi Smart Band 8',
-        category: category[4],
+        category: mockcategory[4],
         sku: "XMSB8BLK",
-        producer: producers[4],
-        features: features.slice(3),
+        producer: mockproducers[4],
+        features: mockfeatures.slice(3),
         price: {
             priceNet: 145.53,
             priceGross: 179,
