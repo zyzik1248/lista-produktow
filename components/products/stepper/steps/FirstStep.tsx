@@ -27,7 +27,8 @@ export default function FirstStep({
         <form.FormGroup
             name="step1"
             validators={{
-                onDynamic: step1Schema
+                onDynamic: step1Schema,
+                onchange: step1Schema
             }}
             onGroupSubmit={() => {
                 setStep(2)

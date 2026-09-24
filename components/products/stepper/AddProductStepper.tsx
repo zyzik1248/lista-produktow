@@ -10,6 +10,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import StepperButtons from "./StepperButtons";
 import { StepItems } from "@/types/stepper";
 import SecondStep from "./steps/SecondStep";
+import ThirdStep from "./steps/ThirdStep";
 
 type AddProductStepperProps = {
     producents: OptionType[]
@@ -37,6 +38,13 @@ export default function AddProductStepper({ producents, categories, features, cu
                 priceGross: null as string | null,
                 vat: "23",
                 currency: 1
+            },
+            step3: {
+                isAvailable: false,
+                isLimited: false,
+                minCartQuantity: "1",
+                maxCartQuantity: "10",
+                stack: "1",
             }
         },
         validationLogic: revalidateLogic(),
@@ -94,7 +102,10 @@ export default function AddProductStepper({ producents, categories, features, cu
         {
             title: "Dostępność",
             subtitle: "Stany magazynowe",
-            item: <>sdd vdsdd</>
+            item: <ThirdStep
+                submitStepRef={submitStepRef}
+                form={form}
+            />
         }
     ]
 
@@ -102,10 +113,15 @@ export default function AddProductStepper({ producents, categories, features, cu
 
     const handleChangeStep = async (newStep: number) => {
         if (newStep > step) {
+            // console.log(step, "kkk")
             await submitStepRef.current[step]?.()
         } else {
             setStep(newStep)
         }
+    }
+
+    const onSubmit = async () => {
+        await submitStepRef.current[3]?.()
     }
 
     return (
@@ -114,7 +130,7 @@ export default function AddProductStepper({ producents, categories, features, cu
                 <Stepper setStep={setStep} step={step} steps={steps} />
             </div>
             <DialogFooter className="p-0 m-0">
-                <StepperButtons setStep={handleChangeStep} step={step} steps={steps} submitLabel="Zapisz Produkt" onSubmit={() => { }} />
+                <StepperButtons setStep={handleChangeStep} step={step} steps={steps} submitLabel="Zapisz Produkt" onSubmit={onSubmit} />
             </DialogFooter>
         </>
     )

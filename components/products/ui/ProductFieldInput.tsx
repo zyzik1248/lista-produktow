@@ -10,6 +10,7 @@ type ProductFieldInputProps = {
     suffix?: string
     type?: "number" | "text"
     onChange?: (value: any) => void
+    orientation?: "horizontal" | "vertical"
     children: (props: {
         value: any
         onChange: (value: any) => void
@@ -33,7 +34,8 @@ export default function ProductFieldInput({
     schema,
     onChange,
     suffix,
-    type = "text"
+    type = "text",
+    orientation = "vertical"
 }: ProductFieldInputProps) {
     const fieldName = `${groupName}.${name}`
 
@@ -41,7 +43,14 @@ export default function ProductFieldInput({
         schema: { safeParse: (v: unknown) => any },
         value: unknown,
     ): string | undefined {
-        const result = schema.safeParse(value)
+        const result =
+            ((schema as any)._def as any).type === "object"
+                ? schema.safeParse({
+                    ...form.getFieldValue(groupName),
+                    [name]: value,
+                })
+                : schema.safeParse(value)
+
 
         if (result.success) return undefined
 
@@ -75,9 +84,9 @@ export default function ProductFieldInput({
                 const errorMessage = field.state.meta.errors[0]
 
                 return (
-                    <Field className="gap-0" data-invalid={hasError}>
+                    <Field className="gap-0 data-[orientation=horizontal]:flex-row-reverse data-[orientation=horizontal]:items-center data-[orientation=horizontal]:justify-end" data-invalid={hasError} orientation={orientation}>
                         <FieldLabel
-                            className="mb-[0.5rem] block text-sm font-medium"
+                            className={`mb-[0.5rem] w-fit block text-sm font-medium ${orientation == "horizontal" ? "mb-0 pl-[0.5rem] leading-[1]" : ""}`}
                             htmlFor={field.name}
                         >
                             {label}

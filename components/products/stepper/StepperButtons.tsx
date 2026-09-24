@@ -17,7 +17,7 @@ export default function StepperButtons({ step, setStep, steps, onSubmit, submitL
     }
 
     return (
-        <div className="p-4 bg-muted/50 rounded-0">
+        <div className="p-4 bg-muted/50 rounded-0  w-full">
             <div className="relative flex justify-between flex-row">
                 <Button
                     onClick={prevStep}

@@ -33,7 +33,50 @@ export const step2Schema = z.object({
     currency: z.number().min(1, "Wymagane"),
 });
 
+export const CartQuantity = z.object({
+    minCartQuantity: z.string(),
+    maxCartQuantity: z.string(),
+}).refine(
+    (data) => Number(data.minCartQuantity) <= Number(data.maxCartQuantity),
+    {
+        path: ["minCartQuantity"],
+        message: "Min. ilość nie może być większa od maksymalnej",
+    }
+).refine(
+    (data) => Number(data.minCartQuantity) <= Number(data.maxCartQuantity),
+    {
+        path: ["maxCartQuantity"],
+        message: "Max. ilość nie może być mniejsza od minimalnej",
+    }
+)
+
+export const step3Schema = z
+    .object({
+        isAvailable: z.boolean(),
+        isLimited: z.boolean(),
+
+        minCartQuantity: z
+            .string("Musi być liczbą całkowitą większą od 0")
+            .regex(/^[1-9]\d*$/, "Musi być liczbą całkowitą większą od 0"),
+
+        maxCartQuantity: z
+            .string("Musi być liczbą całkowitą większą od 0")
+            .regex(/^[1-9]\d*$/, "Musi być liczbą całkowitą większą od 0"),
+
+        stack: z
+            .string("Musi być liczbą całkowitą większą od 0"),
+    })
+    .refine(
+        (data) => data.stack == null || !data.isLimited || /^[1-9]\d*$/.test(data.stack),
+        {
+            path: ["stack"],
+            message: "Musi być liczbą całkowitą większą od 0",
+        }
+    )
+
+
 export const schema = z.object({
     step1: step1Schema,
     step2: step2Schema,
+    step3: step3Schema
 })
