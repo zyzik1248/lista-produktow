@@ -35,6 +35,7 @@ export async function fetcher<T>({
             body: options?.body
                 ? JSON.stringify(options.body)
                 : undefined,
+            cache: "no-store",
         }
     );
 
