@@ -1,7 +1,5 @@
 import { CartQuantity, step3Schema } from "@/lib/schema"
 import ProductInput from "../../ui/ProductInput"
-import ProductSelect from "../../ui/ProductSelect"
-import type { OptionType } from "@/types/product"
 import { RefObject } from "react"
 import ProductSwitch from "../../ui/ProductSwitch"
 import ProductCheckbox from "../../ui/ProductCheckbox"

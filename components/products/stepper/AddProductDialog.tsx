@@ -1,4 +1,4 @@
-import { DialogContent, DialogHeader, DialogTrigger, Dialog, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTrigger, Dialog, DialogTitle } from "@/components/ui/dialog";
 import Image from "next/image";
 import AddProductStepper from "./AddProductStepper";
 import { OptionType } from "@/types/product";
