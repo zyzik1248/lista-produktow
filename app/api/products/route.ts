@@ -4,6 +4,7 @@ import {
   mockcurrencies,
   mockfeatures,
   mockproducers,
+  mockProducts,
 } from "@/data/mockProduct";
 import { productInputSchema } from "@/lib/schema";
 import { ProductType } from "@/types/product";
@@ -15,10 +16,14 @@ export async function GET(request: Request) {
   try {
     const store = getStore("products");
 
-    const products =
-      (await store.get("products", {
-        type: "json",
-      })) ?? [];
+    let products = await store.get("products", {
+      type: "json",
+    });
+
+    if (!products) {
+      products = mockProducts;
+      await store.setJSON("products", products);
+    }
 
     const { searchParams } = new URL(request.url);
 
@@ -28,16 +33,15 @@ export async function GET(request: Request) {
     const start = (page - 1) * limit;
     const paginatedProducts = products.slice(start, start + limit);
 
-    return NextResponse.json(
-      {
-        products: paginatedProducts,
-        total: products.length,
-        page,
-        limit,
-      },
-      { status: 200 }
-    );
-  } catch {
+    return NextResponse.json({
+      products: paginatedProducts,
+      total: products.length,
+      page,
+      limit,
+    });
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }
