@@ -81,65 +81,44 @@ export const schema = z.object({
     step3: step3Schema
 })
 
-export const productInputSchema = z.object({
-    name: z
-        .string()
-        .min(3, "Wymagane, min. 3 znaki"),
+export const productSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  sku: z.string(),
+  description: z.string(),
 
-    sku: z
-        .string()
-        .min(1, "Wymagane")
-        .max(24, "Maks. 24 znaki")
-        .regex(/^[a-zA-Z0-9]+$/, "Tylko litery i cyfry"),
+  producer: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
 
-    description: z.string(),
+  category: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
 
-    producer: z
-        .number()
-        .min(1, "Wymagane"),
+  features: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+    })
+  ),
 
-    category: z
-        .number()
-        .min(1, "Wymagane"),
-
-    features: z
-        .array(z.number())
-        .min(1, "Wybierz co najmniej jedną cechę"),
-
-    price: z.object({
-        priceNet: z.number().nonnegative(),
-        priceGross: z.number().nonnegative(),
-        vat: z.number().nonnegative(),
-        currency: z.number().min(1),
+  price: z.object({
+    priceNet: z.number(),
+    priceGross: z.number(),
+    vat: z.number(),
+    currency: z.object({
+      id: z.number(),
+      name: z.string(),
     }),
+  }),
 
-    availability: z.object({
-        isAvailable: z.boolean(),
-        isLimited: z.boolean(),
-
-        stack: z
-            .number()
-            .int()
-            .positive()
-            .nullable()
-            .optional(),
-
-        minCartQuantity: z
-            .number()
-            .int()
-            .positive(),
-
-        maxCartQuantity: z
-            .number()
-            .int()
-            .positive(),
-    }),
-}).refine(
-    (data) =>
-        data.availability.minCartQuantity <=
-        data.availability.maxCartQuantity,
-    {
-        path: ["availability", "minCartQuantity"],
-        message: "Min. ilość nie może być większa od maksymalnej",
-    }
-)
+  availability: z.object({
+    isAvailable: z.boolean(),
+    isLimited: z.boolean(),
+    stock: z.number().nullable().optional(),
+    minCartQuantity: z.number(),
+    maxCartQuantity: z.number(),
+  }),
+});

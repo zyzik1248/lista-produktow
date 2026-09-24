@@ -6,7 +6,7 @@ import {
   mockproducers,
   mockProducts,
 } from "@/data/mockProduct";
-import { productInputSchema } from "@/lib/schema";
+import { productSchema } from "@/lib/schema";
 import { ProductType } from "@/types/product";
 import { NextResponse } from "next/server";
 
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
       availability: data.availability,
     };
 
-    const result = productInputSchema.safeParse(product);
+    const result = productSchema.safeParse(product);
 
     if (!result.success) {
       return NextResponse.json(
