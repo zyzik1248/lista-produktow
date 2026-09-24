@@ -1,12 +1,25 @@
-import { mockcategory, mockcurrencies, mockfeatures, mockproducers, mockProducts } from "@/data/mockProduct";
+import { getStore } from "@netlify/blobs";
+import {
+  mockcategory,
+  mockcurrencies,
+  mockfeatures,
+  mockproducers,
+} from "@/data/mockProduct";
 import { productInputSchema } from "@/lib/schema";
 import { ProductType } from "@/types/product";
 import { NextResponse } from "next/server";
 
-const products = [...mockProducts];
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
+    const store = getStore("products");
+
+    const products =
+      (await store.get("products", {
+        type: "json",
+      })) ?? [];
+
     const { searchParams } = new URL(request.url);
 
     const page = Number(searchParams.get("page")) || 1;
@@ -15,7 +28,7 @@ export async function GET(request: Request) {
     const start = (page - 1) * limit;
     const paginatedProducts = products.slice(start, start + limit);
 
-    return Response.json(
+    return NextResponse.json(
       {
         products: paginatedProducts,
         total: products.length,
@@ -25,7 +38,7 @@ export async function GET(request: Request) {
       { status: 200 }
     );
   } catch {
-    return Response.json(
+    return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }
     );
@@ -34,6 +47,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const store = getStore("products");
+
+    const products =
+      (await store.get("products", {
+        type: "json",
+      })) ?? [];
+
     const data = await request.json();
 
     const producer = mockproducers.find(
@@ -58,7 +78,8 @@ export async function POST(request: Request) {
     );
 
     const product: ProductType = {
-      id: products.length + 1,
+      id: crypto.randomUUID(),
+
       name: data.name,
       sku: data.sku,
       description: data.description,
@@ -100,7 +121,9 @@ export async function POST(request: Request) {
 
     products.push(product);
 
-    return NextResponse.json({ status: 201 });
+    await store.setJSON("products", products);
+
+    return NextResponse.json(product, { status: 201 });
   } catch {
     return NextResponse.json(
       { error: "Failed to create product" },
