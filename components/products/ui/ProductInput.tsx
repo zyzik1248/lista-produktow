@@ -10,9 +10,10 @@ type ProductInputProps = {
     schema: any
     suffix?: string
     onChange?: (value: any) => void
+    type?: "number" | "text"
 }
 
-export default function ProductInput({ form, name, label, placeholder, groupName, schema, onChange, suffix }: ProductInputProps) {
+export default function ProductInput({ form, name, label, placeholder, groupName, schema, onChange, suffix, type="text" }: ProductInputProps) {
     return (
         <ProductFieldInput
             schema={schema}
@@ -30,6 +31,7 @@ export default function ProductInput({ form, name, label, placeholder, groupName
                     value={props.value ?? ""}
                     className="rounded-[50px] px-3 py-[0.125rem] text-sm text-foreground"
                     style={{ boxShadow: "none" }}
+                    type={type}
                     onChange={(e) => props.onChange(e.target.value)}
                 />
             )}

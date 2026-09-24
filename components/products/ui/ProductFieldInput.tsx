@@ -8,6 +8,7 @@ type ProductFieldInputProps = {
     placeholder?: string
     schema: any
     suffix?: string
+    type?: "number" | "text"
     onChange?: (value: any) => void
     children: (props: {
         value: any
@@ -18,6 +19,7 @@ type ProductFieldInputProps = {
         placeholder: string
         "aria-invalid": boolean
         "aria-describedby": string | undefined
+        type?: "number" | "text"
     }) => React.ReactNode
 }
 
@@ -30,7 +32,8 @@ export default function ProductFieldInput({
     groupName,
     schema,
     onChange,
-    suffix
+    suffix,
+    type = "text"
 }: ProductFieldInputProps) {
     const fieldName = `${groupName}.${name}`
 
@@ -86,14 +89,28 @@ export default function ProductFieldInput({
                                 : field.state.value,
 
                             onChange: (value) => {
+                                const stringValue = String(value)
+
                                 const cleanValue = suffix
-                                    ? String(value).replace(suffix, "")
+                                    ? stringValue.replace(suffix, "")
                                     : value
 
                                 field.handleChange(cleanValue)
                                 onChange?.(cleanValue)
-                            },
 
+                                if (suffix) {
+                                    requestAnimationFrame(() => {
+                                        const input = document.getElementById(field.name) as HTMLInputElement | null
+
+                                        if (!input) return
+
+                                        const position = input.value.length - suffix.length
+
+                                        input.setSelectionRange(position, position)
+                                    })
+                                }
+                            },
+                            type,
                             onBlur: field.handleBlur,
                             id: field.name,
                             name: field.name,

@@ -17,14 +17,12 @@ export const step1Schema = z.object({
 
 const moneySchema = z
     .string("Podaj poprawną kwotę")
-    .nullable()
     .refine(
         (value) =>
             value === null ||
             /^(0|[1-9]\d*)(\.\d{0,2})?$/.test(value),
         "Podaj poprawną kwotę"
     )
-
 
 export const step2Schema = z.object({
     priceNet: moneySchema,
@@ -37,5 +35,5 @@ export const step2Schema = z.object({
 
 export const schema = z.object({
     step1: step1Schema,
-    step2: step2Schema
+    step2: step2Schema,
 })

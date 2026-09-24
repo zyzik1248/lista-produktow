@@ -19,9 +19,9 @@ export default function SecondStep({
 }: SecondStepProps) {
     return (
         <form.FormGroup
-            name="step1"
+            name="step2"
             validators={{
-                onDynamic: step1Schema
+                onDynamic: step2Schema
             }}
             onGroupSubmit={() => {
                 setStep(3)
@@ -44,16 +44,9 @@ export default function SecondStep({
                                         placeholder="0.0"
                                         groupName="step2"
                                         schema={step2Schema}
+                                        type="number"
                                         onChange={(e) => {
-                                            const value = String(e).replace(/[^0-9.]/g, "")
-
-                                            if (value === "") {
-                                                form.setFieldValue("step2.priceGross", null)
-                                                form.setFieldValue("step2.priceNet", null)
-                                                return
-                                            }
-
-                                            const net = Number(value)
+                                            const net = Number(e)
                                             const vat = Number(form.getFieldValue("step2.vat"))
 
                                             form.setFieldValue(
@@ -71,16 +64,9 @@ export default function SecondStep({
                                         placeholder="0.0"
                                         groupName="step2"
                                         schema={step2Schema}
+                                        type="number"
                                         onChange={(e) => {
-                                            const value = String(e).replace(/[^0-9.]/g, "")
-
-                                            if (value === "") {
-                                                form.setFieldValue("step2.priceGross", null)
-                                                form.setFieldValue("step2.priceNet", null)
-                                                return
-                                            }
-
-                                            const gross = Number(value)
+                                            const gross = Number(e)
                                             const vat = Number(form.getFieldValue("step2.vat"))
 
                                             form.setFieldValue(
@@ -102,14 +88,12 @@ export default function SecondStep({
                                         schema={step2Schema}
                                         suffix="%"
                                         onChange={(e) => {
-                                            const value = String(e).replace(/[^0-9.]/g, "")
-
-                                            const vat = Number(value)
+                                            const vat = Number(e)
                                             const net = Number(form.getFieldValue("step2.priceNet"))
 
                                             form.setFieldValue(
                                                 "step2.priceGross",
-                                                String(net * (1 + vat / 100))
+                                                String(Math.round(net * (1 + vat / 100)))
                                             )
                                         }}
                                     />
