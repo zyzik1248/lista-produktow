@@ -3,15 +3,19 @@ import ProductInput from "../../ui/ProductInput"
 import { RefObject } from "react"
 import ProductSwitch from "../../ui/ProductSwitch"
 import ProductCheckbox from "../../ui/ProductCheckbox"
+import { PostProduct } from "@/lib/api/products"
 
 type SecondStepProps = {
     form: any
     submitStepRef: RefObject<Record<number, () => void>>
+    dialogClear: ()=>void
+    
 }
 
 export default function ThirdStep({
     form,
     submitStepRef,
+    dialogClear
 }: SecondStepProps) {
     return (
         <form.FormGroup
@@ -20,7 +24,36 @@ export default function ThirdStep({
                 onDynamic: step3Schema,
                 onChange: CartQuantity,
             }}
-            onGroupSubmit={() => {
+            onGroupSubmit={async () => {
+                try {
+                    const values = form.state.values
+
+                    const product = {
+                        ...values.step1,
+                        price: Object.fromEntries(
+                            Object.entries(values.step2).map(([key, value]) => [
+                                key,
+                                Number(value)
+                            ])
+                        ),
+                        availability: {
+                            ...values.step3,
+                            maxCartQuantity: Number(values.step3.maxCartQuantity),
+                            minCartQuantity: Number(values.step3.minCartQuantity),
+                            stack: values.step3.stack === ""
+                                ? null
+                                : Number(values.step3.stack)
+                        }
+                    }
+
+                    await PostProduct({ product })
+                    form.reset()
+                    dialogClear()
+                } catch (error) {
+                    throw Error(`${error}`)
+                }
+
+
             }}
             children={(group: any) => {
 
@@ -54,7 +87,7 @@ export default function ThirdStep({
                                 selector={(state: any) => state.values.step3.isLimited}
                             >
                                 {(isLimited: boolean) => (
-                                    <div className="md:w-1/2 overflow-hidden" style={{maxHeight: isLimited ? 60 : 0}}>
+                                    <div className="md:w-1/2 overflow-hidden" style={{ maxHeight: isLimited ? 60 : 0 }}>
                                         <ProductInput
                                             form={form}
                                             label="Ilość na magazymie"

@@ -101,7 +101,7 @@ export default function SecondStep({
                                     placeholder="PLN"
                                     groupName="step2"
                                     schema={step2Schema}
-                                    items={currencies.map(({ id, name }) => ({ label: name, value: id }))}
+                                    items={currencies.map(({ id, name="" }) => ({ label: name, value: id }))}
                                 />
                             </div>
                         </div>

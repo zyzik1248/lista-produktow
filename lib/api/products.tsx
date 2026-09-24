@@ -12,7 +12,7 @@ type ProductsResq = {
     page: number
 }
 
-export async function getProducts({page}: ProductsResq): Promise<ProductsResp> {
+export async function getProducts({ page }: ProductsResq): Promise<ProductsResp> {
     try {
         return await fetcher<ProductsResp>({
             url: "/api/products",
@@ -28,5 +28,21 @@ export async function getProducts({page}: ProductsResq): Promise<ProductsResp> {
             page: 1,
             total: 0
         };
+    }
+}
+
+export async function PostProduct({ product }: {product: ProductType}) {
+    try {
+        await fetcher({
+            url: "/api/products",
+            options:{
+                method: "POST",
+                body: {
+                    ...product
+                }
+            },
+        });
+    } catch (error) {
+        console.error(error);
     }
 }

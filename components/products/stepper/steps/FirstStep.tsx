@@ -69,7 +69,7 @@ export default function FirstStep({
                             <div className="flex flex-col gap-4 md:flex-row">
                                 <ProductSelect
                                     form={form}
-                                    items={producents.map(({ id, name }) => ({
+                                    items={producents.map(({ id, name="" }) => ({
                                         label: name,
                                         value: id,
                                     }))}
@@ -81,7 +81,7 @@ export default function FirstStep({
                                 />
                                 <ProductSelect
                                     form={form}
-                                    items={categories.map(({ id, name }) => ({
+                                    items={categories.map(({ id, name="" }) => ({
                                         label: name,
                                         value: id,
                                     }))}
@@ -96,7 +96,7 @@ export default function FirstStep({
                                 form={form}
                                 label="Cechy produktu"
                                 name="features"
-                                items={features.map(({ id, name }) => ({
+                                items={features.map(({ id, name="" }) => ({
                                     label: name,
                                     value: id,
                                 }))}

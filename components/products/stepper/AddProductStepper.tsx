@@ -6,7 +6,7 @@ import { revalidateLogic, useForm } from "@tanstack/react-form";
 import FirstStep from "./steps/FirstStep";
 import { schema } from "@/lib/schema";
 import { OptionType } from "@/types/product";
-import { DialogFooter } from "@/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import StepperButtons from "./StepperButtons";
 import { StepItems } from "@/types/stepper";
 import SecondStep from "./steps/SecondStep";
@@ -17,10 +17,20 @@ type AddProductStepperProps = {
     categories: OptionType[]
     features: OptionType[]
     currencies: OptionType[]
+    setOpenDialog: (open: boolean) => void
 }
 
-export default function AddProductStepper({ producents, categories, features, currencies }: AddProductStepperProps) {
+export default function AddProductStepper({
+    producents,
+    categories,
+    features,
+    currencies,
+    setOpenDialog
+}: AddProductStepperProps) {
+
     const [step, setStep] = useState(1)
+    const [stepsDone, setStepsDone] = useState([false, false, false])
+
     const submitStepRef = useRef<Record<number, () => void>>({})
 
     const form = useForm({
@@ -47,10 +57,13 @@ export default function AddProductStepper({ producents, categories, features, cu
                 stack: "1",
             }
         },
+
         validationLogic: revalidateLogic(),
+
         validators: {
             onDynamic: schema,
         },
+
         listeners: {
             onChange: ({ formApi }) => {
                 const values = formApi.state.values
@@ -62,23 +75,26 @@ export default function AddProductStepper({ producents, categories, features, cu
 
                 const stepIndex = step - 1
 
-                if (result.success) {
-                    steps[stepIndex].isDone = true
-                    setSteps([...steps])
-                } else if (steps[stepIndex].isDone) {
-                    steps[stepIndex].isDone = false
-                    setSteps([...steps])
-                }
+                setStepsDone(prev => {
+                    const next = [...prev]
+                    next[stepIndex] = result.success
+                    return next
+                })
             },
         },
-
     })
+
+    const dialogClear = () => {
+        setStep(1)
+        setStepsDone([false, false, false])
+        setOpenDialog(false)
+    }
 
     const stepsList: StepItems[] = [
         {
             title: "Informacje",
             subtitle: "Dane podstawowe",
-            item:
+            item: (
                 <FirstStep
                     setStep={setStep}
                     producents={producents}
@@ -86,34 +102,41 @@ export default function AddProductStepper({ producents, categories, features, cu
                     features={features}
                     submitStepRef={submitStepRef}
                     form={form}
-                />,
+                />
+            ),
         },
         {
             title: "Cena",
             subtitle: "Dane cenowe",
-            item:
+            item: (
                 <SecondStep
                     setStep={setStep}
                     currencies={currencies}
                     submitStepRef={submitStepRef}
                     form={form}
-                />,
+                />
+            ),
         },
         {
             title: "Dostępność",
             subtitle: "Stany magazynowe",
-            item: <ThirdStep
-                submitStepRef={submitStepRef}
-                form={form}
-            />
+            item: (
+                <ThirdStep
+                    submitStepRef={submitStepRef}
+                    form={form}
+                    dialogClear={dialogClear}
+                />
+            )
         }
     ]
 
-    const [steps, setSteps] = useState([...stepsList])
+    const steps: StepItems[] = stepsList.map((item, index) => ({
+        ...item,
+        isDone: stepsDone[index],
+    }))
 
     const handleChangeStep = async (newStep: number) => {
         if (newStep > step) {
-            // console.log(step, "kkk")
             await submitStepRef.current[step]?.()
         } else {
             setStep(newStep)
@@ -121,16 +144,35 @@ export default function AddProductStepper({ producents, categories, features, cu
     }
 
     const onSubmit = async () => {
-        await submitStepRef.current[3]?.()
+        try {
+            await submitStepRef.current[3]?.()
+        } catch (error) {
+            console.log("error")
+        }
     }
 
     return (
         <>
+            <DialogClose className="absolute right-4 top-6 font-geist text-foreground text-base font-medium" onClick={dialogClear}>
+                x
+            </DialogClose>
+
             <div className="px-4 flex-1 md:flex-none">
-                <Stepper setStep={setStep} step={step} steps={steps} />
+                <Stepper
+                    setStep={setStep}
+                    step={step}
+                    steps={steps}
+                />
             </div>
+
             <DialogFooter className="p-0 m-0">
-                <StepperButtons setStep={handleChangeStep} step={step} steps={steps} submitLabel="Zapisz Produkt" onSubmit={onSubmit} />
+                <StepperButtons
+                    setStep={handleChangeStep}
+                    step={step}
+                    steps={steps}
+                    submitLabel="Zapisz Produkt"
+                    onSubmit={onSubmit}
+                />
             </DialogFooter>
         </>
     )

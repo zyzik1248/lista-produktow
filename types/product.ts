@@ -12,7 +12,7 @@ export type ProductType = {
 
 export type OptionType = {
   id: string | number
-  name: string
+  name?: string
 }
 
 export type PriceType = {
