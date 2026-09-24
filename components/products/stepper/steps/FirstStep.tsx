@@ -74,7 +74,7 @@ export default function FirstStep({
                                         value: id,
                                     }))}
                                     placeholder="Wybierz producenta"
-                                    name="producent"
+                                    name="producer"
                                     label="Producent"
                                     groupName="step1"
                                     schema={step1Schema}

@@ -8,7 +8,7 @@ export const step1Schema = z.object({
         .max(24, "Maks. 24 znaki")
         .regex(/^[a-zA-Z0-9]+$/, "Tylko litery i cyfry"),
     description: z.string(),
-    producent: z.number("wymagane").min(1, "Wymagane"),
+    producer: z.number("wymagane").min(1, "Wymagane"),
     category: z.number("wymagane").min(1, "Wymagane"),
     features: z
         .array(z.number())

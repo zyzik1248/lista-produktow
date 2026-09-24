@@ -39,7 +39,7 @@ export default function AddProductStepper({
                 name: "",
                 sku: "",
                 description: "",
-                producent: 0,
+                producer: 0,
                 category: 0,
                 features: [] as number[],
             },
