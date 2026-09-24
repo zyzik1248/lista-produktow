@@ -1,3 +1,5 @@
+import { toast } from "@/components/ui/toast";
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export type FetchType = {
@@ -37,6 +39,10 @@ export async function fetcher<T>({
     );
 
     if (!response.ok) {
+        toast.add({
+            title: "Coś poszło nie tak",
+            type: "error",
+        })
         throw new Error(`${response}`);
     }
 

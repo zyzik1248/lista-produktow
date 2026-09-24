@@ -4,12 +4,14 @@ import { RefObject } from "react"
 import ProductSwitch from "../../ui/ProductSwitch"
 import ProductCheckbox from "../../ui/ProductCheckbox"
 import { PostProduct } from "@/lib/api/products"
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/toast";
 
 type SecondStepProps = {
     form: any
     submitStepRef: RefObject<Record<number, () => void>>
-    dialogClear: ()=>void
-    
+    dialogClear: () => void
+
 }
 
 export default function ThirdStep({
@@ -17,6 +19,8 @@ export default function ThirdStep({
     submitStepRef,
     dialogClear
 }: SecondStepProps) {
+    const router = useRouter();
+
     return (
         <form.FormGroup
             name="step3"
@@ -49,6 +53,12 @@ export default function ThirdStep({
                     await PostProduct({ product })
                     form.reset()
                     dialogClear()
+                    router.refresh();
+                    toast.add({
+                        title: "Produkt został dodany",
+                        type: "success",
+                    })
+
                 } catch (error) {
                     throw Error(`${error}`)
                 }

@@ -22,6 +22,7 @@ export default function AddProductDialog({
     const [open, setOpen] = useState(false)
 
     return (
+
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger className="text-sm px-4 cursor-pointer flex gap-1.5 py-[0.5rem] text-primary-foreground bg-[#2563EB] border-0 rounded-[50px] hover:bg-[#2563EB]">
                 <Image src="/Plus.png" alt="plus" width={16} height={16} />
