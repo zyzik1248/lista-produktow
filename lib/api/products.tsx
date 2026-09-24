@@ -31,11 +31,11 @@ export async function getProducts({ page }: ProductsResq): Promise<ProductsResp>
     }
 }
 
-export async function PostProduct({ product }: {product: ProductType}) {
+export async function PostProduct({ product }: { product: ProductType }) {
     try {
         await fetcher({
             url: "/api/products",
-            options:{
+            options: {
                 method: "POST",
                 body: {
                     ...product
@@ -44,5 +44,6 @@ export async function PostProduct({ product }: {product: ProductType}) {
         });
     } catch (error) {
         console.error(error);
+        throw Error(`${error}`)
     }
 }

@@ -12,19 +12,27 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+const productsDev = [...mockProducts]
+
 export async function GET(request: Request) {
   try {
-    const store = getStore("products");
+    let products = []
 
-    let products = await store.get("products", {
-      type: "json",
-      consistency: "strong",
-    });
+    if (process.env.NODE_ENV == "development") {
+      products = productsDev
+    } else {
+      const store = getStore("products");
 
-    if (!products) {
-      products = mockProducts;
+      products = await store.get("products", {
+        type: "json",
+        consistency: "strong",
+      });
 
-      await store.setJSON("products", products);
+      if (!products) {
+        products = mockProducts;
+
+        await store.setJSON("products", products);
+      }
     }
 
     const { searchParams } = new URL(request.url);
@@ -33,6 +41,7 @@ export async function GET(request: Request) {
     const limit = 7;
 
     const start = (page - 1) * limit;
+
     const paginatedProducts = products.slice(start, start + limit);
 
     return NextResponse.json({
@@ -53,23 +62,25 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const store = getStore("products");
+    let products: ProductType[];
 
-    const products =
-      (await store.get("products", {
-        type: "json",
-        consistency: "strong",
-      })) ?? [];
+    if (process.env.NODE_ENV === "development") {
+      products = productsDev;
+    } else {
+      const store = getStore("products");
+
+      products =
+        ((await store.get("products", {
+          type: "json",
+          consistency: "strong",
+        })) as ProductType[] | null) ?? [];
+    }
 
     const data = await request.json();
 
-    const producer = mockproducers.find(
-      (item) => item.id === data.producer
-    );
+    const producer = mockproducers.find((item) => item.id === data.producer);
 
-    const category = mockcategory.find(
-      (item) => item.id === data.category
-    );
+    const category = mockcategory.find((item) => item.id === data.category);
 
     const features = data.features.map((id: string | number) => {
       const feature = mockfeatures.find((item) => item.id === id);
@@ -128,7 +139,10 @@ export async function POST(request: Request) {
 
     products.push(product);
 
-    await store.setJSON("products", products);
+    if (process.env.NODE_ENV !== "development") {
+      const store = getStore("products");
+      await store.setJSON("products", products);
+    }
 
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
