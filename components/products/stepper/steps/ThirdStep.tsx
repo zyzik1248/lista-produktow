@@ -11,7 +11,6 @@ type SecondStepProps = {
     form: any
     submitStepRef: RefObject<Record<number, () => void>>
     dialogClear: () => void
-
 }
 
 export default function ThirdStep({
