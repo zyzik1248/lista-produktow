@@ -18,10 +18,12 @@ export async function GET(request: Request) {
 
     let products = await store.get("products", {
       type: "json",
+      consistency: "strong",
     });
 
     if (!products) {
       products = mockProducts;
+
       await store.setJSON("products", products);
     }
 
@@ -56,6 +58,7 @@ export async function POST(request: Request) {
     const products =
       (await store.get("products", {
         type: "json",
+        consistency: "strong",
       })) ?? [];
 
     const data = await request.json();
@@ -128,7 +131,9 @@ export async function POST(request: Request) {
     await store.setJSON("products", products);
 
     return NextResponse.json(product, { status: 201 });
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       { error: "Failed to create product" },
       { status: 500 }
