@@ -15,31 +15,23 @@ export const dynamic = "force-dynamic";
 const STORE_NAME = "lista-produktow";
 const KEY = "all";
 
-async function getProductsFromStore(): Promise<ProductType[]> {
-  const store = getStore({ name: STORE_NAME, consistency: "strong" });
-  const existing = await store.get(KEY, { type: "json" });
-
-  if (existing && Array.isArray(existing) && existing.length > 0) {
-    return existing as ProductType[];
-  }
-
-  const initial = [...mockProducts];
-  await store.setJSON(KEY, initial);
-  return initial;
-}
-
-async function saveProductsToStore(products: ProductType[]): Promise<void> {
-  const store = getStore({ name: STORE_NAME, consistency: "strong" });
-  await store.setJSON(KEY, products);
-}
-
 export async function GET(request: Request) {
   try {
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
+    const existing = await store.get(KEY, { type: "json" });
+
+    let products: ProductType[];
+
+    if (existing && Array.isArray(existing) && existing.length > 0) {
+      products = existing as ProductType[];
+    } else {
+      products = [...mockProducts];
+      await store.setJSON(KEY, products);
+    }
+
     const { searchParams } = new URL(request.url);
     const page = Number(searchParams.get("page")) || 1;
     const limit = 7;
-
-    const products = await getProductsFromStore();
     const start = (page - 1) * limit;
     const paginatedProducts = products.slice(start, start + limit);
 
@@ -63,8 +55,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const store = getStore({ name: STORE_NAME, consistency: "strong" });
     const data = await request.json();
-    const products = await getProductsFromStore();
+
+    const existing = await store.get(KEY, { type: "json" });
+    const products: ProductType[] = existing && Array.isArray(existing) && existing.length > 0
+      ? (existing as ProductType[])
+      : [...mockProducts];
 
     const producer = mockproducers.find((item) => item.id === data.producer);
     const category = mockcategory.find((item) => item.id === data.category);
@@ -118,7 +115,7 @@ export async function POST(request: Request) {
     }
 
     products.push(product);
-    await saveProductsToStore(products);
+    await store.setJSON(KEY, products);
 
     return NextResponse.json({ status: 201 });
   } catch (err) {
