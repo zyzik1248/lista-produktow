@@ -62,7 +62,7 @@ export default function ProductTable({ products, page, totalPages }: ProductTabl
                             </ProductTableCell>
                             <ProductTableCell className="text-foreground bg-accent py-3 pr-3 rounded-r-[9px] md:py-3.5 md:px-4 md:bg-transparent">
                                 <p className="text-muted-foreground text-xs pb-xs md:hidden">Magazyn</p>
-                                <p className="text-foreground">{availability.isLimited ? availability.stock : "—"}</p>
+                                <p className="text-foreground">{availability.isLimited ? availability.stack : "—"}</p>
                             </ProductTableCell>
                         </TableRow>
                     ))}

@@ -145,7 +145,7 @@ export const mockProducts: ProductType[] = [
             isLimited: true,
             maxCartQuantity: 100,
             minCartQuantity: 1,
-            stock: 45
+            stack: 45
         }
     },
     {
@@ -192,7 +192,7 @@ export const mockProducts: ProductType[] = [
             isLimited: true,
             maxCartQuantity: 100,
             minCartQuantity: 1,
-            stock: 0
+            stack: 0
         }
     },
     {

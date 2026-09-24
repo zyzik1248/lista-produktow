@@ -25,7 +25,7 @@ export type PriceType = {
 export type AvailabilityType = {
     isAvailable: boolean
     isLimited: boolean
-    stock?: number | null
+    stack?: number | null
     minCartQuantity: number
     maxCartQuantity: number
 }

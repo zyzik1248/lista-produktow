@@ -43,7 +43,6 @@ export async function POST(request: Request) {
       (item) => item.id === data.category
     );
 
-    // console.log(data.features, data, "eee")
     const features = data.features.map((id: string | number) => {
       const feature = mockfeatures.find((item) => item.id === id);
 
